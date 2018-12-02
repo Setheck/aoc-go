@@ -12,23 +12,16 @@ func Test_Day1Part1(t *testing.T) {
 	input := InputLines(t, Day1Input)
 	device := days.NewDevice()
 	device.CalibrateDevice(input, func(d *days.Device, i int) bool {
-		if i == 1 {
-			return true
-		}
-		return false
+		return i == 1
 	})
 	assert.Equal(t, int64(595), device.Frequency(), "Frequency did not match accepted answer")
 }
 
 func Test_Day1Part2(t *testing.T) {
-	input:= InputLines(t,Day1Input)
+	input := InputLines(t, Day1Input)
 	device := days.NewDevice()
 	device.CalibrateDevice(input, func(d *days.Device, i int) bool {
-		freq := d.Frequency()
-		if times := d.SeenBefore(freq); times > 1 {
-			return true
-		}
-		return false
+		return d.SeenBefore(d.Frequency()) > 1
 	})
 	assert.Equal(t, int64(80598), device.Frequency(), "Frequency did not match accepted answer")
 }
