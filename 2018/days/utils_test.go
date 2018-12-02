@@ -7,6 +7,7 @@ import (
 	"testing"
 )
 
+// InputLines parse a file into an array of lines from the file
 func InputLines(t *testing.T, filename string) []string {
 	t.Helper()
 	b,err := ioutil.ReadFile(filename)
