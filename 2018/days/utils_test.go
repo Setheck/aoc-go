@@ -10,12 +10,12 @@ import (
 // InputLines parse a file into an array of lines from the file
 func InputLines(t *testing.T, filename string) []string {
 	t.Helper()
-	b,err := ioutil.ReadFile(filename)
+	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		t.Error(err)
 	}
 	scanner := bufio.NewScanner(bytes.NewBuffer(b))
-	output := make([]string,0)
+	output := make([]string, 0)
 	for scanner.Scan() {
 		output = append(output, scanner.Text())
 	}

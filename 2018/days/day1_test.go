@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	Day1Input = "testdata/day1.txt"
+	Day1Input       = "testdata/day1.txt"
 	Day1Part1Result = 595
 	Day1Part2Result = 80598
 )
