@@ -1,7 +1,7 @@
 package days_test
 
 import (
-	"adventofcode2018/2018/days"
+	"aoc-go/2018/days"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
