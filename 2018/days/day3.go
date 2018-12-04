@@ -108,19 +108,19 @@ func OverlappingClaims(input []string) int {
 		allclaims = append(allclaims, NewClaim(s))
 	}
 	totalArea := 0
-	overlaps := make([]Square, 0, len(allclaims)/2)
+	// overlaps := make([]Square, 0, len(allclaims)/2)
 	for i := 0; i < len(allclaims); i++ {
 		for j := i + 1; j < len(allclaims); j++ {
 			overlap := allclaims[i].Overlap(allclaims[j].Square)
 			totalArea += allclaims[i].Area() + allclaims[j].Area() - overlap.Area()
 
-			overlaps = append(overlaps, overlap)
+			// overlaps = append(overlaps, overlap)
 		}
 	}
-	for i := 0; i < len(overlaps); i++ {
-		for j := i; j < len(overlaps); j++ {
-			totalArea -= overlaps[i].Overlap(overlaps[j]).Area()
-		}
-	}
+	// for i := 0; i < len(overlaps); i++ {
+	// 	for j := i; j < len(overlaps); j++ {
+	// 		totalArea -= overlaps[i].Overlap(overlaps[j]).Area()
+	// 	}
+	// }
 	return totalArea
 }
