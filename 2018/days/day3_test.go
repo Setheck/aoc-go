@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	Day3Input       = "testdata/test.txt" //"testdata/day2.txt"
+	Day3Input       = "testdata/day3.txt"
 	Day3Part1Result = 0
 	Day3Part2Result = 0
 )
