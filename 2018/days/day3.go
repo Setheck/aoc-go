@@ -9,22 +9,26 @@ import (
 // See https://adventofcode.com/2018/day/3 for description of problem
 
 const (
-	FabricSize = 5000
+	fabricSize = 5000
 )
 
+// Claim relate a claim id to a square
 type Claim struct {
 	id int
 	Square
 }
 
+// Id retrieve claim id
 func (c Claim) Id() int {
 	return c.id
 }
 
+// String return friendly string of claim
 func (c Claim) String() string {
 	return fmt.Sprintf("Id: %d, Square: %s", c.id, c.Square.String())
 }
 
+// Square it is a square
 type Square struct {
 	left   int
 	top    int
@@ -32,26 +36,33 @@ type Square struct {
 	height int
 }
 
+// NewSquare create a new instance of a square
 func NewSquare(top, left, width, height int) Square {
 	return Square{top: top, left: left, width: width, height: height}
 }
 
+// String return a friendly string representation of the square
 func (s Square) String() string {
 	return fmt.Sprintf("left: %d, top: %d, width: %d, height: %d, right(c): %d, bottom(c): %d",
 		s.left, s.top, s.width, s.height, s.Right(), s.Bottom())
 }
+
+// Left return the left most edge
 func (s Square) Left() int {
 	return s.left
 }
 
+// Top return the top most edge
 func (s Square) Top() int {
 	return s.top
 }
 
+// Width return the square width
 func (s Square) Width() int {
 	return s.width
 }
 
+// Height return the square height
 func (s Square) Height() int {
 	return s.height
 }
@@ -150,7 +161,7 @@ func OverlappingClaims(input []string) int {
 	for _, s := range input {
 		allclaims = append(allclaims, NewClaim(s))
 	}
-	var grid [FabricSize][FabricSize]int
+	var grid [fabricSize][fabricSize]int
 	for i := 0; i < len(allclaims); i++ {
 		sq := allclaims[i].Square
 		for l := sq.Left(); l < sq.Right(); l++ {
