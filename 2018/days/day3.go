@@ -28,8 +28,8 @@ type Square struct {
 	height int
 }
 
-func NewSquare(top, left, height, width int) Square {
-	return Square{top: top, left: left, height: height, width: width}
+func NewSquare(top, left, width, height int) Square {
+	return Square{top: top, left: left, width: width, height: height}
 }
 
 func (s Square) String() string {
@@ -115,24 +115,13 @@ func OverlappingClaims(input []string) int {
 	for _, s := range input {
 		allclaims = append(allclaims, NewClaim(s))
 	}
-	var grid [1000][1000]int
-
-	// Add up all unique overlaps
+	var grid [5000][5000]int
 	for i := 0; i < len(allclaims); i++ {
 		sq := allclaims[i].Square
-		oor := false
-		for l := sq.Left(); l <= sq.Right(); l++ {
-			for t := sq.Top(); t <= sq.Bottom(); t++ {
-				if l >= 0 && l < 1000 && t >= 0 && t < 1000 {
-					grid[l][t] += 1
-				} else {
-					oor = true
-				}
-
+		for l := sq.Left(); l < sq.Right(); l++ {
+			for t := sq.Top(); t < sq.Bottom(); t++ {
+				grid[l][t] += 1
 			}
-		}
-		if oor {
-			fmt.Printf("Out of range: %s\n", allclaims[i].String())
 		}
 	}
 	total := 0
