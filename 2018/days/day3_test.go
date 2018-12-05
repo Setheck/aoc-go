@@ -9,12 +9,17 @@ import (
 const (
 	Day3Input       = "testdata/day3.txt"
 	Day3Part1Result = 107043
-	Day3Part2Result = 0
+	Day3Part2Result = 346
 )
 
 func Test_Day3Part1(t *testing.T) {
 	input := InputLines(t, Day3Input)
 	assert.Equal(t, Day3Part1Result, days.OverlappingClaims(input), "inches of overlap did not match accepted answer")
+}
+
+func Test_Day3Part2(t *testing.T) {
+	input := InputLines(t, Day3Input)
+	assert.Equal(t, []int{Day3Part2Result}, days.NoOverlap(input), "Id did not match the accepted answer")
 }
 
 func TestSquare_NoOverlap(t *testing.T) {

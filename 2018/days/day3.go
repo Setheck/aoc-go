@@ -8,6 +8,10 @@ import (
 
 // See https://adventofcode.com/2018/day/3 for description of problem
 
+const (
+	FabricSize = 5000
+)
+
 type Claim struct {
 	id int
 	Square
@@ -52,22 +56,22 @@ func (s Square) Height() int {
 	return s.height
 }
 
+// Right calculate the right most edge of the square
 func (s Square) Right() int {
 	return s.left + s.width
 }
 
+// Bottom calculate the bottom most edge of the square
 func (s Square) Bottom() int {
 	return s.top + s.height
 }
 
-func (s Square) LargestCorner() (int, int) {
-	return s.left + s.width, s.top + s.height
-}
-
+// Area return the area of the square
 func (s Square) Area() int {
 	return s.height * s.width
 }
 
+// Empty check if square is all zeros (empty)
 func (s Square) Empty() bool {
 	return s.top == 0 &&
 		s.left == 0 &&
@@ -75,6 +79,7 @@ func (s Square) Empty() bool {
 		s.height == 0
 }
 
+// Equals check square equality
 func (s Square) Equals(sqr Square) bool {
 	return s.top == sqr.top &&
 		s.left == sqr.left &&
@@ -82,6 +87,7 @@ func (s Square) Equals(sqr Square) bool {
 		s.height == sqr.height
 }
 
+// Overlap compare two squares, return a new square of overlap between the two compared.
 func (s Square) Overlap(sqr Square) Square {
 	left, top, width, height := 0, 0, 0, 0
 
@@ -99,8 +105,9 @@ func (s Square) Overlap(sqr Square) Square {
 	return Square{top: top, left: left, width: width, height: height}
 }
 
+// NewClaim generate a new claim from the given input line,
+// example: #1 @ 2,3: 4x5 -> ClaimId: 1, Left: 2, Top: 3, Width: 4, Height: 5
 func NewClaim(s string) Claim {
-	// #9 @ 109,286: 11x16
 	reader := strings.NewReader(s)
 	var id, left, top, width, height int
 	if _, err := fmt.Fscanf(reader, "#%d @ %d,%d: %dx%d",
@@ -110,12 +117,40 @@ func NewClaim(s string) Claim {
 	return Claim{id: id, Square: NewSquare(top, left, width, height)}
 }
 
+// NoOverlap take a list of input lines and return the claim id of any claims that have no overlaps
+func NoOverlap(input []string) []int {
+	allclaims := make([]Claim, 0)
+	for _, s := range input {
+		allclaims = append(allclaims, NewClaim(s))
+	}
+	claimIds := make([]int, 0, len(allclaims))
+	for i := 0; i < len(allclaims); i++ {
+		overlap := false
+		sq1 := allclaims[i].Square
+		for j := 0; j < len(allclaims); j++ {
+			if j == i {
+				// skip comparing self because it will always overlap.
+				continue
+			}
+			sq2 := allclaims[j].Square
+			if sq1.Overlap(sq2).Area() > 0 {
+				overlap = true
+			}
+		}
+		if !overlap {
+			claimIds = append(claimIds, allclaims[i].Id())
+		}
+	}
+	return claimIds
+}
+
+// OverlappingClaims take a list of input lines, and return the total area overlapped by 2 or more claims
 func OverlappingClaims(input []string) int {
 	allclaims := make([]Claim, 0)
 	for _, s := range input {
 		allclaims = append(allclaims, NewClaim(s))
 	}
-	var grid [5000][5000]int
+	var grid [FabricSize][FabricSize]int
 	for i := 0; i < len(allclaims); i++ {
 		sq := allclaims[i].Square
 		for l := sq.Left(); l < sq.Right(); l++ {
