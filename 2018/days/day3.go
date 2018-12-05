@@ -17,6 +17,10 @@ func (c Claim) Id() int {
 	return c.id
 }
 
+func (c Claim) String() string {
+	return fmt.Sprintf("Id: %d, Square: %s", c.id, c.Square.String())
+}
+
 type Square struct {
 	left   int
 	top    int
@@ -28,6 +32,10 @@ func NewSquare(top, left, height, width int) Square {
 	return Square{top: top, left: left, height: height, width: width}
 }
 
+func (s Square) String() string {
+	return fmt.Sprintf("left: %d, top: %d, width: %d, height: %d, right(c): %d, bottom(c): %d",
+		s.left, s.top, s.width, s.height, s.Right(), s.Bottom())
+}
 func (s Square) Left() int {
 	return s.left
 }
@@ -103,24 +111,38 @@ func NewClaim(s string) Claim {
 }
 
 func OverlappingClaims(input []string) int {
-	allclaims := make([]Claim, 0, len(input))
+	allclaims := make([]Claim, 0)
 	for _, s := range input {
 		allclaims = append(allclaims, NewClaim(s))
 	}
-	totalArea := 0
-	// overlaps := make([]Square, 0, len(allclaims)/2)
-	for i := 0; i < len(allclaims); i++ {
-		for j := i + 1; j < len(allclaims); j++ {
-			overlap := allclaims[i].Overlap(allclaims[j].Square)
-			totalArea += allclaims[i].Area() + allclaims[j].Area() - overlap.Area()
+	var grid [1000][1000]int
 
-			// overlaps = append(overlaps, overlap)
+	// Add up all unique overlaps
+	for i := 0; i < len(allclaims); i++ {
+		sq := allclaims[i].Square
+		oor := false
+		for l := sq.Left(); l <= sq.Right(); l++ {
+			for t := sq.Top(); t <= sq.Bottom(); t++ {
+				if l >= 0 && l < 1000 && t >= 0 && t < 1000 {
+					grid[l][t] += 1
+				} else {
+					oor = true
+				}
+
+			}
+		}
+		if oor {
+			fmt.Printf("Out of range: %s\n", allclaims[i].String())
 		}
 	}
-	// for i := 0; i < len(overlaps); i++ {
-	// 	for j := i; j < len(overlaps); j++ {
-	// 		totalArea -= overlaps[i].Overlap(overlaps[j]).Area()
-	// 	}
-	// }
-	return totalArea
+	total := 0
+	for i := 0; i < len(grid); i++ {
+		for j := 0; j < len(grid[i]); j++ {
+			if grid[i][j] > 1 {
+				total += 1
+			}
+		}
+	}
+
+	return total
 }
