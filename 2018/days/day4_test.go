@@ -1,6 +1,8 @@
 package days_test
 
 import (
+	"aoc-go/2018/days"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -11,6 +13,9 @@ const (
 )
 
 func Test_Day4Part1(t *testing.T) {
-	// input := InputLines(t, Day4Input)
-
+	t.SkipNow()
+	input := InputLines(t, Day4Input)
+	events := days.ParseEvents(input)
+	id := days.MostAsleep(events)
+	assert.Equal(t, id, Day4Part1Result)
 }
